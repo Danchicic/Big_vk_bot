@@ -370,4 +370,3 @@ for event in longpolling.listen():
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Мы передали ваше сообщение нашим модераторам',
                           keyboard=pass_kb)
-print('Сак кок')
