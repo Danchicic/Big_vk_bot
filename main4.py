@@ -100,7 +100,7 @@ for event in longpolling.listen():
                           text='Вопросы по переводу',
                           keyboard=question_kb())
             i += 1
-            user_state['data']['stack'] = ['Вы выбрали читателя', create_reader_kb()]
+            user_state['data']['stack'].append(['Вы выбрали читателя', create_reader_kb()])
             moder = False
         elif txt == 'качество перевода':
             i += 1
@@ -108,11 +108,11 @@ for event in longpolling.listen():
                           text='Перевожу вас на общение с модератором',
                           keyboard=pass_kb)
             moder = True
-            user_state['data']['stack'] = ['Вопросы по перевду', question_kb()]
+            user_state['data']['stack'].append(['Вопросы по перевду', question_kb()])
 
 
         elif txt == 'переводчики не открывают платки':
-            user_state['data']['stack'] = ['Вопросы по перевду', question_kb()]
+            user_state['data']['stack'].append(['Вопросы по перевду', question_kb()])
             i += 1
             answer = 'читатель>вопросы по переводу>переводчики не открывают платки'
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
@@ -125,14 +125,14 @@ for event in longpolling.listen():
             moder = False
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Выберите из предложенного списка', keyboard=read_event_dif())
-            user_state['data']['stack'] = ['Выберите из предложенного списка', create_reader_kb()]
+            user_state['data']['stack'].append(['Выберите из предложенного списка', create_reader_kb()])
 
         elif txt == 'хочу предложить фичу':
             i += 1
             user.send_msg(vk_session, event.user_id, text='Опишите фичу',
                           keyboard=pass_kb)
             user_state['data']['click_up'] = True
-            user_state['data']['stack'] = ['Выберите из предложеннго списка', read_event_dif()]
+            user_state['data']['stack'].append(['Выберите из предложеннго списка', read_event_dif()])
 
 
         elif txt == 'мне дали бан':
@@ -141,7 +141,7 @@ for event in longpolling.listen():
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text=ans,
                           keyboard=pass_kb)
-            user_state['data']['stack'] = ['Выберите из предложеннго списка', read_event_dif()]
+            user_state['data']['stack'].append(['Выберите из предложеннго списка', read_event_dif()])
 
 
 
@@ -151,8 +151,7 @@ for event in longpolling.listen():
                           text='Перевожу вас на общение с модератором',
                           keyboard=pass_kb)
             moder = True
-            user_state['data']['stack'] = ['Выберите из предложеннго списка', read_event_dif()]
-
+            user_state['data']['stack'].append(['Выберите из предложеннго списка', read_event_dif()])
 
             # 4) Ошибки
         elif txt == 'у меня возникла ошибка':
@@ -160,21 +159,21 @@ for event in longpolling.listen():
             error_kb = create_error_kb()
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Выберите из предложенного списка', keyboard=error_kb)
-            user_state['data']['stack'] = ['Выберите из предложенного списка', create_reader_kb()]
+            user_state['data']['stack'].append(['Выберите из предложенного списка', create_reader_kb()])
 
         elif txt == 'не грузятся картинки':
             i += 1
             pic_ans = 'читатель>у меня возникла ошибка>картинки'
             user.send_msg(vk_session, event.user_id, text=pic_ans,
                           keyboard=pass_kb)
-            user_state['data']['stack'] = ['Выберите из предложеннго списка', error_kb]
+            user_state['data']['stack'].append(['Выберите из предложеннго списка', error_kb])
 
         elif txt == 'ошибка 500':
             i += 1
             er_500 = 'читатель>у меня возникла ошибка>500'
             user.send_msg(vk_session, event.user_id, text=er_500,
                           keyboard=pass_kb)
-            user_state['data']['stack'] = ['Выберите из предложеннго списка', error_kb]
+            user_state['data']['stack'].append(['Выберите из предложеннго списка', error_kb])
 
 
         elif txt == 'ошибка 404':
@@ -182,14 +181,14 @@ for event in longpolling.listen():
             er_404 = 'читатель>у меня возникла ошибка>404'
             user.send_msg(vk_session, event.user_id, text=er_404,
                           keyboard=pass_kb)
-            user_state['data']['stack'] = ['Выберите из предложеннго списка', error_kb]
+            user_state['data']['stack'].append(['Выберите из предложеннго списка', error_kb])
 
 
         elif txt == 'я нашел баг':
             click_up = 1
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Опишите ошибку', keyboard=pass_kb)
-            user_state['data']['stack'] = ['Выберите из предложеннго списка', error_kb]
+            user_state['data']['stack'].append(['Выберите из предложеннго списка', error_kb])
 
         elif click_up:
             click_up_text = event.text
@@ -204,7 +203,7 @@ for event in longpolling.listen():
                           user_id=event.user_id,
                           text='Не пришли деньги/тикеты',
                           keyboard=money_kb())
-            user_state['data']['stack'] = ['Выберите из предложенного списка', create_reader_kb()]
+            user_state['data']['stack'].append(['Выберите из предложенного списка', create_reader_kb()])
         elif txt == 'не пришли деньги':
             i += 1
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
