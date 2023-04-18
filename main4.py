@@ -310,18 +310,26 @@ for event in longpolling.listen():
         elif txt == 'автор':
             user.send_msg(vk_session=vk_session, user_id=event.user_id, text='Вы выбрали Автора',
                           keyboard=author_kb)
+            # if ['Выберите из предложеннго списка', author_kb] not in user_state['data']['stack']:
+            #     user_state['data']['stack'].append(['Выберите из предложеннго списка', author_kb])
         # перебор ивентов автора
         elif txt == 'как заливать главы?':
             glvs_ans = 'автор-как заливать главы-'
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text=glvs_ans,
                           keyboard=pass_kb)
+            i += 1
+            if ['Выберите из предложеннго списка', author_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Выберите из предложеннго списка', author_kb])
         elif txt == 'как выкладывать свою работу?':
             upload_ans = 'автор-как выкладывать свою работу-'
             user.send_msg(vk_session=vk_session,
                           user_id=event.user_id,
                           text=upload_ans,
                           keyboard=pass_kb)
+            i += 1
+            if ['Выберите из предложеннго списка', error_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Выберите из предложеннго списка', author_kb])
 
         # Проблемы Переводчика
         elif txt == 'переводчик':
@@ -334,6 +342,9 @@ for event in longpolling.listen():
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Монетизация',
                           keyboard=translator_money_kb)
+            i += 1
+            if ['Выберите из предложеннго списка', trans_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Выберите из предложеннго списка', trans_kb])
         elif txt == 'как подключить':
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Есть верификация?',
@@ -354,40 +365,60 @@ for event in longpolling.listen():
                           keyboard=pass_kb)
 
         elif txt == 'вопросы по договорам':
+            i += 1
             user.send_msg(vk_session=vk_session,
                           user_id=event.user_id,
                           text='вопросы по договорам',
                           keyboard=translator_question)
+            if ['Монетизация', translator_money_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Монетизация', translator_money_kb])
+
         elif txt == 'перенос на другое лицо/расторжение':
             ans = 'переводчик-монетизация-вопросы по договорам-перенос'
             user.send_msg(vk_session=vk_session,
                           user_id=event.user_id,
                           text=ans,
                           keyboard=pass_kb)
+            i += 1
+            if ['вопросы по договорам', translator_question] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['вопросы по договорам', translator_question])
 
         elif txt == 'вопросы по подписанию':
+            i += 1
+
             ans = 'переводчик-монетизация-вопросы по договорам-вопросы по подписанию'
             user.send_msg(vk_session=vk_session,
                           user_id=event.user_id,
                           text=ans,
                           keyboard=pass_kb)
+            if ['вопросы по договорам', translator_question] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['вопросы по договорам', translator_question])
 
         elif txt == 'работа сайта':
+            i += 1
             user.send_msg(vk_session=vk_session,
                           user_id=event.user_id,
                           text='Глава не заливается',
                           keyboard=work_kb)
+            if ['Выберите из предложеннго списка', trans_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Выберите из предложеннго списка', trans_kb])
         elif txt == 'основа':
             user.send_msg(vk_session=vk_session,
                           user_id=event.user_id,
                           text='Вес-ответ',
                           keyboard=pass_kb)
+            i += 1
+            if ['Выберите из предложеннго списка', trans_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Выберите из предложеннго списка', trans_kb])
 
         elif txt == 'зеркало. пояснить про реманга.орг':
             user.send_msg(vk_session=vk_session,
                           user_id=event.user_id,
                           text='Ответ про вес тип вес-ответ',
                           keyboard=pass_kb)
+            i += 1
+            if ['Выберите из предложеннго списка', trans_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Выберите из предложеннго списка', trans_kb])
 
         elif txt == 'другое' and user_state['data']['trans']:
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
