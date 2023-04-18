@@ -356,7 +356,6 @@ for event in longpolling.listen():
                           user_id=event.user_id,
                           text='действие поставить платки и ответ',
                           keyboard=pass_kb)
-
         elif txt == 'нет' and user_state['data']['how_link']:
             user_state['data']['how_link'] = False
             user.send_msg(vk_session=vk_session,
@@ -380,8 +379,8 @@ for event in longpolling.listen():
                           text=ans,
                           keyboard=pass_kb)
             i += 1
-            if ['вопросы по договорам', translator_question] not in user_state['data']['stack']:
-                user_state['data']['stack'].append(['вопросы по договорам', translator_question])
+            if ['Вопросы по договорам', translator_question] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Вопросы по договорам', translator_question])
 
         elif txt == 'вопросы по подписанию':
             i += 1
@@ -391,8 +390,8 @@ for event in longpolling.listen():
                           user_id=event.user_id,
                           text=ans,
                           keyboard=pass_kb)
-            if ['вопросы по договорам', translator_question] not in user_state['data']['stack']:
-                user_state['data']['stack'].append(['вопросы по договорам', translator_question])
+            if ['Вопросы по договорам', translator_question] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Вопросы по договорам', translator_question])
 
         elif txt == 'работа сайта':
             i += 1
@@ -408,8 +407,8 @@ for event in longpolling.listen():
                           text='Вес-ответ',
                           keyboard=pass_kb)
             i += 1
-            if ['Выберите из предложеннго списка', trans_kb] not in user_state['data']['stack']:
-                user_state['data']['stack'].append(['Выберите из предложеннго списка', trans_kb])
+            if ['Выберите из предложеннго списка', work_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Выберите из предложеннго списка', work_kb])
 
         elif txt == 'зеркало. пояснить про реманга.орг':
             user.send_msg(vk_session=vk_session,
@@ -417,22 +416,29 @@ for event in longpolling.listen():
                           text='Ответ про вес тип вес-ответ',
                           keyboard=pass_kb)
             i += 1
-            if ['Выберите из предложеннго списка', trans_kb] not in user_state['data']['stack']:
-                user_state['data']['stack'].append(['Выберите из предложеннго списка', trans_kb])
+            if ['Выберите из предложеннго списка', work_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Выберите из предложеннго списка', work_kb])
 
         elif txt == 'другое' and user_state['data']['trans']:
+            i += 1
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Перевожу вас на общение с модератором',
                           keyboard=pass_kb)
+            if ['Вы выбрали переводчика', trans_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Вы выбрали переводчика', trans_kb])
+
             user_state['trans'] = False
 
             moder = True
 
         elif txt == 'перехват/альта/передача тайтла':
+            i += 1
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Перевожу вас на общение с модератором',
                           keyboard=pass_kb)
             moder = True
+            if ['Вы выбрали переводчика', trans_kb] not in user_state['data']['stack']:
+                user_state['data']['stack'].append(['Вы выбрали переводчика', trans_kb])
 
         elif txt in ['у вас остались вопросы?',
                      'сменить пользователя']:
@@ -453,6 +459,7 @@ for event in longpolling.listen():
 
             user.send_msg(vk_session=vk_session, user_id=event.user_id, text=user_state['data']['stack'][i][0],
                           keyboard=user_state['data']['stack'][i][1])
+            user_state['data']['stack'].pop(i)
             i -= 1
         if user_state['data']['click_up']:
             # Отправить таск на сайт
