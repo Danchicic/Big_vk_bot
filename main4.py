@@ -45,11 +45,10 @@ longpolling = VkLongPoll(vk_session)
 i = 0
 user = User()
 states = {}
-
+click_up = 0
 for event in longpolling.listen():
 
     if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-        click_up = 0
         user_id = event.user_id
 
         if user_id not in states:
@@ -81,7 +80,6 @@ for event in longpolling.listen():
             user_state['data']['stack'] = [['Выберите пользователя', start_kb], ]
 
         elif txt == 'читатель':
-            click_up = 0
             user.send_msg(vk_session=vk_session, user_id=event.user_id, text='Вы выбрали читателя',
                           keyboard=create_reader_kb)
             user_state['data']['reader'] = True
@@ -221,15 +219,16 @@ for event in longpolling.listen():
 
         elif txt == 'я нашел баг':
             i += 1
-            click_up = 1
+            user_state['data']['click_up'] = True
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Опишите ошибку', keyboard=pass_kb)
             if ['Выберите из предложеннго списка', error_kb] not in user_state['data']['stack']:
                 user_state['data']['stack'].append(['Выберите из предложеннго списка', error_kb])
 
-        elif click_up:
+        elif user_state['data']['click_up']:
             click_up_text = event.text
-            click_up = 0
+            user_state['data']['click_up'] = False
+            print(click_up_text)
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Мы передали ваше сообщение нашим модераторам',
                           keyboard=pass_kb)
@@ -535,11 +534,11 @@ for event in longpolling.listen():
                           keyboard=user_state['data']['stack'][i][1])
             user_state['data']['stack'].pop(i)
             i -= 1
-        if user_state['data']['click_up']:
-            # Отправить таск на сайт
-            click_up_text = event.text
-            print(click_up_text)
-            user_state['data']['click_up'] = False
-            user.send_msg(vk_session=vk_session, user_id=event.user_id,
-                          text='Мы передали ваше сообщение нашим модераторам',
-                          keyboard=pass_kb)
+        # if user_state['data']['click_up']:
+        #     # Отправить таск на сайт
+        #     click_up_text = event.text
+        #     print(click_up_text)
+        #     user_state['data']['click_up'] = False
+        #     user.send_msg(vk_session=vk_session, user_id=event.user_id,
+        #                   text='Мы передали ваше сообщение нашим модераторам',
+        #                   keyboard=pass_kb)
