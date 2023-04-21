@@ -45,9 +45,7 @@ longpolling = VkLongPoll(vk_session)
 i = 0
 user = User()
 states = {}
-click_up = 0
 for event in longpolling.listen():
-
     if event.type == VkEventType.MESSAGE_NEW and event.to_me:
         user_id = event.user_id
 
@@ -64,7 +62,9 @@ for event in longpolling.listen():
             user_state['data']['how_link'] = False
             user_state['data']['stack'] = [['Выберите пользователя', start_kb], ]
         user_state = states[user_id]
-
+        if len(user_state['data']['stack']) == 0:
+            user_state['data']['stack'] = [['Выберите пользователя', start_kb], ]
+            i = 0
         print(user_state['data']['stack'])
         txt = event.text.lower()
         if txt == 'начать':
@@ -500,7 +500,7 @@ for event in longpolling.listen():
                 user_state['data']['stack'].append(['Вы выбрали переводчика', trans_kb])
 
         elif txt in ['у вас остались вопросы?',
-                     'сменить пользователя']:
+                     'сменить пользователя', 'сменить пользователя/назад']:
             start_kb = create_kb(['Читатель', 'Автор', 'Переводчик'], one_time=False)
             user.send_msg(vk_session=vk_session, user_id=event.user_id,
                           text='Выбор категории:', keyboard=start_kb)
@@ -533,6 +533,7 @@ for event in longpolling.listen():
             user.send_msg(vk_session=vk_session, user_id=event.user_id, text=user_state['data']['stack'][i][0],
                           keyboard=user_state['data']['stack'][i][1])
             user_state['data']['stack'].pop(i)
+            print(len( user_state['data']['stack']), i)
             i -= 1
         # if user_state['data']['click_up']:
         #     # Отправить таск на сайт

@@ -10,7 +10,8 @@ def create_reader_kb():
     reader_kb.add_button('У меня возникла ошибка')
     reader_kb.add_line()
     reader_kb.add_button('Не пришли деньги/тикеты')
-    reader_kb.add_button('Сменить пользователя')
+    reader_kb.add_line()
+    reader_kb.add_button('Назад', color='negative')
     return reader_kb
 
 

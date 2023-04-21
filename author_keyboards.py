@@ -7,7 +7,7 @@ def author_kb():
     kb.add_line()
     kb.add_button('Как заливать главы?')
     kb.add_line()
-    kb.add_button('Сменить пользователя')
+    kb.add_button('Назад', color='negative')
     return kb
 
 

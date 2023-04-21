@@ -9,7 +9,7 @@ def trans_kb():
     kb.add_line()
     kb.add_button('Перехват/альта/передача тайтла')
     kb.add_line()
-    kb.add_button('Сменить пользователя')
+    kb.add_button('Назад', color='negative')
     return kb
 
 
