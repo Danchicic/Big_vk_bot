@@ -1,5 +1,7 @@
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
+import json
+
 
 from config import TOKEN
 
@@ -7,6 +9,8 @@ from Users import User
 from reader_keyboards import *
 from author_keyboards import *
 from translator_keyboards import *
+from main_kb import *
+import sqlite3
 
 create_reader_kb = create_reader_kb()
 read_event_dif = read_event_dif()
@@ -17,7 +21,6 @@ money_kb = money_kb()
 if_kb_reader_24 = if_kb()
 if_kb_reader_re = if_kb()
 if_kb_reader_linked = if_kb()
-if_kb_translator = if_kb()
 
 author_kb = author_kb()
 
@@ -25,31 +28,28 @@ work_kb = work_kb()
 translator_question = translator_question()
 translator_money_kb = translator_money_kb()
 trans_kb = trans_kb()
+if_kb_translator = if_kb()
 
+with open('ans.json', 'r') as f:
+    data = json.load(f)
 
-def create_kb(buttons: list, one_time: bool = False):
-    kb = VkKeyboard(one_time=one_time)
-    for el in buttons:
-        kb.add_button(el)
-    return kb
+pass_kb = pass_keyb()
 
-
-pass_kb = VkKeyboard(one_time=False)
-pass_kb.add_button('У вас остались вопросы?')
-pass_kb.add_button('Назад')
-start_kb = create_kb(['Читатель', 'Автор', 'Переводчик'], one_time=False)
+start_kb = start_kb()
 
 # Авторизация пользователя
 vk_session = vk_api.VkApi(token=TOKEN)
+vk = vk_session.get_api()
 longpolling = VkLongPoll(vk_session)
+print(type(vk_session))
+
 i = 0
 user = User()
 states = {}
-
-for event in longpolling.listen():
-    if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-        user_id = event.user_id
-        try:
+try:
+    for event in longpolling.listen():
+        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+            user_id = event.user_id
 
             if user_id not in states:
                 # Новый пользователь, создаем новое состояние
@@ -62,6 +62,8 @@ for event in longpolling.listen():
                 user_state['data']['linked?'] = False
                 user_state['data']['click_up'] = False
                 user_state['data']['how_link'] = False
+                user_state['data']['moder'] = False
+                user_state['data']['level'] = False
                 user_state['data']['stack'] = [['Выберите пользователя', start_kb], ]
             user_state = states[user_id]
             if len(user_state['data']['stack']) == 0:
@@ -85,8 +87,7 @@ for event in longpolling.listen():
                 user.send_msg(vk_session=vk_session, user_id=event.user_id, text='Вы выбрали читателя',
                               keyboard=create_reader_kb)
                 user_state['data']['reader'] = True
-                # user_state['data']['last_msg'] = ['Выбор категории:', start_kb]
-                # перебор ивентов читателя
+
 
                 # 1) Re:pass
             elif txt == 're:pass':
@@ -98,26 +99,23 @@ for event in longpolling.listen():
                 print(user_state['data']['stack'], i)
 
             elif txt == 'как начать?':
-                answer = '1answer??????'
                 i += 1
                 user.send_msg(vk_session=vk_session, user_id=event.user_id,
-                              text=answer, keyboard=pass_kb)
+                              text=data['reader']['re:pass']['how_to_start'], keyboard=pass_kb)
                 if ['Re:pass', re_pass_kb] not in user_state['data']['stack']:
                     user_state['data']['stack'].append(['Re:pass', re_pass_kb])
 
             elif txt == 'нет заданий':
                 i += 1
-                answer = '2answer??????'
                 user.send_msg(vk_session=vk_session, user_id=event.user_id,
-                              text=answer, keyboard=pass_kb)
+                              text=data['reader']['re:pass']['no_tasks'], keyboard=pass_kb)
                 if ['Re:pass', re_pass_kb] not in user_state['data']['stack']:
                     user_state['data']['stack'].append(['Re:pass', re_pass_kb])
 
             elif txt == 'не засчитывается задание':
                 i += 1
-                answer = '3answer??????'
                 user.send_msg(vk_session=vk_session, user_id=event.user_id,
-                              text=answer, keyboard=pass_kb)
+                              text=data['reader']['re:pass']['task_no_counted'], keyboard=pass_kb)
                 if ['Re:pass', re_pass_kb] not in user_state['data']['stack']:
                     user_state['data']['stack'].append(['Re:pass', re_pass_kb])
 
@@ -136,12 +134,12 @@ for event in longpolling.listen():
                               text='Перевожу вас на общение с модератором',
                               keyboard=pass_kb)
                 moder = True
-                if ['Вопросы по перевду', question_kb] not in user_state['data']['stack']:
-                    user_state['data']['stack'].append(['Вопросы по перевду', question_kb])
+                if ['Вопросы по переводу', question_kb] not in user_state['data']['stack']:
+                    user_state['data']['stack'].append(['Вопросы по переводу', question_kb])
 
             elif txt == 'переводчики не открывают платки':
-                if ['Вопросы по перевду', question_kb] not in user_state['data']['stack']:
-                    user_state['data']['stack'].append(['Вопросы по перевду', question_kb])
+                if ['Вопросы по переводу', question_kb] not in user_state['data']['stack']:
+                    user_state['data']['stack'].append(['Вопросы по переводу', question_kb])
                 i += 1
                 answer = 'читатель>вопросы по переводу>переводчики не открывают платки'
                 user.send_msg(vk_session=vk_session, user_id=event.user_id,
@@ -315,6 +313,9 @@ for event in longpolling.listen():
                               text='Идет пересчет баланса...',
                               keyboard=pass_kb)
                 user_state['data']['linked?'] = False
+
+                print(vk.messages.getHistory(user_id=event.user_id))
+
                 if ['Привязать к re?', if_kb_reader_linked] not in user_state['data']['stack']:
                     user_state['data']['stack'].append(['Привязать к re?', if_kb_reader_linked])
             elif txt == 'нет' and user_state['data']['linked?']:
@@ -485,8 +486,7 @@ for event in longpolling.listen():
                     user_state['data']['stack'].append(['Вы выбрали переводчика', trans_kb])
 
             elif txt in ['у вас остались вопросы?',
-                         'сменить пользователя', 'сменить пользователя/назад']:
-                start_kb = create_kb(['Читатель', 'Автор', 'Переводчик'], one_time=False)
+                         'сменить пользователя']:
                 user.send_msg(vk_session=vk_session, user_id=event.user_id,
                               text='Выбор категории:', keyboard=start_kb)
                 i = 0
@@ -500,10 +500,6 @@ for event in longpolling.listen():
                 user_state['data']['stack'] = [['Выберите пользователя', start_kb], ]
 
             elif txt == 'назад':
-                # if user_state['data']['link_re']:
-                #     print(user_state['data']['link_re'], '_-_--___--_----_---_-_--_')
-                #     user_state['data']['link_re'] = False
-                #     user_state['data']['money'] = True
                 print('Уровень вложенности: ', i)
                 if user_state['data']['stack'][i][0] == user_state['data']['stack'][i][0] == 'Прошло 24 часа?':
                     user_state['data']['money'] = True
@@ -520,27 +516,6 @@ for event in longpolling.listen():
                 user_state['data']['stack'].pop(i)
                 print(len(user_state['data']['stack']), i)
                 i -= 1
-            # if user_state['data']['click_up']:
-            #     # Отправить таск на сайт
-            #     click_up_text = event.text
-            #     print(click_up_text)
-            #     user_state['data']['click_up'] = False
-            #     user.send_msg(vk_session=vk_session, user_id=event.user_id,
-            #                   text='Мы передали ваше сообщение нашим модераторам',
-            #                   keyboard=pass_kb)
-        except Exception as ex:
-            print(ex)
-            user.send_msg(vk_session=vk_session, user_id=event.user_id,
-                          text='Возникла ошибка, пожалуйста начните сначала', keyboard=start_kb)
-            start_kb = create_kb(['Читатель', 'Автор', 'Переводчик'], one_time=False)
-            user.send_msg(vk_session=vk_session, user_id=event.user_id,
-                          text='Выбор категории:', keyboard=start_kb)
-            i = 0
-            user_state['data']['trans'] = False
-            user_state['data']['reader'] = False
-            user_state['data']['money'] = False
-            user_state['data']['link_re'] = False
-            user_state['data']['linked?'] = False
-            user_state['data']['click_up'] = False
-            user_state['data']['how_link'] = False
-            user_state['data']['stack'] = [['Выберите пользователя', start_kb], ]
+
+except Exception as ex:
+    print(ex)

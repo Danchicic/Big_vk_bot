@@ -1,0 +1,40 @@
+{
+  "reader": {
+    "re:pass": {
+      "how_to_start": "reader-re:pass-how_to_start",
+      "no_tasks": "reader-re:pass-no_tasks",
+      "task_no_counted": "reader-re:pass-task_no_counted"
+    },
+    "other": {
+      "i_banned": "читатель>другое>мне дали бан"
+    },
+    "translation_questions": {
+      "trans_no_open_hand": "читатель>вопросы по переводу>переводчики не открывают платки"
+    },
+    "error_messages": {
+      "no_pic": "читатель>у меня возникла ошибка>картинки",
+      "er500": "читатель>у меня возникла ошибка>500",
+      "er404": "читатель>у меня возникла ошибка>404"
+    }
+  },
+  "author": {
+    "howto": {
+      "how_to_chapters": "автор-как заливать главы-",
+      "how_to_my_work": "автор-как выкладывать свою работу-"
+    }
+  },
+  "translator": {
+    "howto": {
+      "put_hand": "действие поставить платки и ответ",
+      "need_to_sign": "действие нужно подписать и ответ"
+    },
+    "monetization_questions": {
+      "transfer": "переводчик-монетизация-вопросы по договорам-перенос",
+      "sign_question": "переводчик-монетизация-вопросы по договорам-вопросы по подписанию"
+    }
+  },
+  "site_issues": {
+    "main": "Вес-ответ",
+    "remanga": "Ответ про вес тип вес-ответ"
+  }
+}
