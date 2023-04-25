@@ -1,5 +1,5 @@
 from translator_keyboards import *
-from reader_keyboards import if_kb
+from reader.reader_keyboards import if_kb
 from main_kb import pass_keyb
 pass_kb = pass_keyb()
 

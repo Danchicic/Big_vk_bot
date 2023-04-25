@@ -6,11 +6,10 @@ import json
 from config import TOKEN
 
 from Users import User
-from reader_keyboards import *
-from author_keyboards import *
-from translator_keyboards import *
+from reader.reader_keyboards import *
+from author.author_keyboards import *
+from translator.translator_keyboards import *
 from main_kb import *
-import sqlite3
 
 create_reader_kb = create_reader_kb()
 read_event_dif = read_event_dif()
@@ -29,6 +28,7 @@ translator_question = translator_question()
 translator_money_kb = translator_money_kb()
 trans_kb = trans_kb()
 if_kb_translator = if_kb()
+print(len(str(if_kb_translator)))
 
 with open('ans.json', 'r') as f:
     data = json.load(f)

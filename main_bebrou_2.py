@@ -6,12 +6,14 @@ from vars_from_bd import *
 from config import TOKEN
 
 from Users import User
-from reader_keyboards import *
-from author_keyboards import *
-from translator_keyboards import *
+
+from reader.reader_keyboards import *
+from author.author_keyboards import *
+from translator.translator_keyboards import *
+
 from main_kb import *
 
-from reader import reader
+from reader.reader import reader
 
 import sqlite3
 
@@ -46,8 +48,6 @@ longpolling = VkLongPoll(vk_session)
 i = 0
 user = User()
 states = {}
-
-
 conn = sqlite3.connect('database.db')
 cursor = conn.cursor()
 try:
@@ -55,35 +55,39 @@ try:
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             user_id = event.user_id
             txt = event.text.lower()
-
-            res = cursor.execute('SELECT * FROM user_state').fetchall()
+            res = cursor.execute('SELECT id FROM user_state').fetchall()
             print(res, 'bd')
 
-            if user_id not in res:
-                # Новый пользователь, создаем новое состояние
-                states[user_id] = {"data": {}}
-                user_state = states[user_id]
-                user_state['data']['trans'] = False
-                user_state['data']['reader'] = False
-                user_state['data']['money'] = False
-                user_state['data']['link_re'] = False
-                user_state['data']['linked?'] = False
-                user_state['data']['click_up'] = False
-                user_state['data']['how_link'] = False
-                user_state['data']['moder'] = False
-                user_state['data']['level'] = False
-                user_state['data']['stack'] = [['Выберите пользователя', start_kb], ]
-            user_state = states[user_id]
-            if len(user_state['data']['stack']) == 0:
-                user_state['data']['stack'] = [['Выберите пользователя', start_kb], ]
-                i = 0
+            if event.user_id not in [r[0] for r in res]:
+                print('excellent')
+                cursor.execute(f"INSERT INTO user_state (id) VALUES ({event.user_id})")
+                conn.commit()
+            data = cursor.execute(
+                "SELECT * FROM user_state WHERE id=?", (event.user_id,)
+            ).fetchone()
+
+            TRANS = data[1]
+            READER = data[2]
+            money = data[3]
+            link_re = data[4]
+            linked = data[5]
+            click_up = data[6]
+            how_link = data[7]
+            moder = data[8]
             print(READER)
+
+            if txt == 'начать':
+                user.send_msg(vk_session=vk_session, user_id=event.user_id,
+                              text='Выберите категорию',
+                              keyboard=start_kb)
+
             if txt == 'читатель' or READER:
-                reader(vk_session, user, event, user_state, i)
+                reader(vk_session, user, event, i, cursor, conn)
             elif txt == 'автор' or AUTHOR:
+                print('Автор')
                 pass
             elif txt == 'переводчик' or TRANSLATOR:
                 pass
 
 except Exception as ex:
-    print(ex)
+    print(ex, 'EX')
