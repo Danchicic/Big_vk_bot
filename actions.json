@@ -1,0 +1,15 @@
+[
+  {
+  "text" : "читатель",
+  "func" : "reader"
+},
+  {
+  "text" :   "re:pass",
+    "func" : " re_pass"
+  },
+  {
+    "text" : "Как начать",
+    "func": "how_to_start"
+  }
+
+]
