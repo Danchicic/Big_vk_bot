@@ -1,5 +1,9 @@
 [
   {
+    "text": "начать",
+    "func": "start"
+  },
+  {
     "text": "читатель",
     "func": "reader"
   },
@@ -10,6 +14,175 @@
   {
     "text": "как начать?",
     "func": "how_to_start"
+  },
+  {
+    "text": "нет заданий",
+    "func": "no_tasks"
+  },
+  {
+    "text": "не засчитывается задание",
+    "func": "task_no_counted"
+  },
+  {
+    "text": "вопросы по переводу",
+    "func": "translation_questions"
+  },
+  {
+    "text": "качество перевода",
+    "func": "translation_quality"
+  },
+  {
+    "text": "переводчики не открывают платки",
+    "func": "translators_dont_open"
+  },
+  {
+    "text": "другое",
+    "func": "another"
+  },
+  {
+    "text": "хочу предложить фичу",
+    "func": "want_to_idea"
+  },
+  {
+    "text": "мне дали бан",
+    "func": "i_banned"
+  },
+  {
+    "text": "позвать модератора",
+    "func": "invite_moder"
+  },
+  {
+    "text": "у меня возникла ошибка",
+    "func": "some_wrong"
+  },
+  {
+    "text": "ошибка 404",
+    "func": "error_404"
+  },
+  {
+    "text": "ошибка 500",
+    "func": "error_500"
+  },
+  {
+    "text": "не грузятся картинки",
+    "func": "no_pic"
+  },
+  {
+    "text": "я нашел баг",
+    "func": "find_bug"
+  },
+  {
+    "text": "сменить пользователя",
+    "func": "last_message",
+    "Перенести в конец__-_----____________________": "fhdjak"
+  },
+  {
+    "text": "у вас остались вопросы?",
+    "func": "last_message"
+  },
+  {
+    "text": "назад",
+    "func": "back"
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
+  },
+  {
+    "text": "",
+    "func": ""
   },
   {
     "text": "",
