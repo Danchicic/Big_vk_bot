@@ -1,5 +1,4 @@
 import sqlite3
-import inspect
 from Users import User
 from reader.reader_keyboards import if_kb
 
@@ -11,12 +10,11 @@ print(type(user), type(if_kb_reader_linked))
 
 conn = sqlite3.connect('database.db')
 cursor = conn.cursor()
-cursor.execute("INSERT INTO user_state (reader) VALUES (True)")
+# cursor.execute("INSERT INTO user_state (reader) VALUES (True)")
 # class_source = inspect.getsource(if_kb_reader_linked)
 # cursor.execute("INSERT INTO user_state (last_text, last_keyboard) VALUES (?, ?)",
 #                (last_msg[0], class_source))
-conn.commit()
-conn.close()
+
 
 """# создание соединения с базой данных
 conn = sqlite3.connect('database.db')
@@ -44,15 +42,7 @@ for row in rows:
 
 # закрытие соединения
 conn.close()"""
-#Создание таблички
-cursor.execute('''CREATE TABLE user_state
-                  (id integer
-                  trans boolean,
-                   reader boolean,
-                   money boolean,
-                   link_re boolean,
-                   linked boolean,
-                   click_up boolean,
-                   how_link boolean, 
-                   moder boolean
-                   )''')
+# Создание таблички
+cursor.execute('''CREATE TABLE user_state (id integer)''')
+conn.commit()
+conn.close()

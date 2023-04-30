@@ -47,6 +47,7 @@ i = 0
 user = User()
 states = {}
 try:
+    print('Начало работы')
     for event in longpolling.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             user_id = event.user_id

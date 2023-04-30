@@ -1,15 +1,18 @@
 [
   {
-  "text" : "читатель",
-  "func" : "reader"
-},
-  {
-  "text" :   "re:pass",
-    "func" : " re_pass"
+    "text": "читатель",
+    "func": "reader"
   },
   {
-    "text" : "Как начать",
+    "text": "re:pass",
+    "func": "re_pass"
+  },
+  {
+    "text": "как начать?",
     "func": "how_to_start"
+  },
+  {
+    "text": "",
+    "func": ""
   }
-
 ]
