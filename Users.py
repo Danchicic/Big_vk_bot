@@ -84,7 +84,7 @@ class Bot:
                 return x()
 
     def start(self):
-        self.user.send_msg(self.vk_session, 'Выберитте пользователя', start_kb)
+        self.user.send_msg(self.vk_session, 'Выберите пользователя', start_kb)
 
     def reader(self):
         self.user.send_msg(self.vk_session, 'Читатель', create_reader_kb)
@@ -190,6 +190,16 @@ class Bot:
                             ('У меня возникла ошибка',))
         self.conn.commit()
         """посмотреть что с click_up'ом"""
+
+    def no_money_or_tickets(self):
+        self.user.send_msg(self.vk_session, text='Не пришли деньги/тикеты', keyboard=money_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('Читатель',))
+        self.conn.commit()
+    def no_money(self):
+        pass
+    def no_tickets(self):
+        pass
 
     def back(self):
         for row in actions:
