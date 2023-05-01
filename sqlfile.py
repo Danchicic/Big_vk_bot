@@ -14,6 +14,7 @@ cursor.execute('''CREATE TABLE user_state
                    click_up boolean,
                    how_link boolean,
                    moder boolean,
+                   tickets boolean,
                    last_answer varchar(120)
                    )''')
 conn.commit()

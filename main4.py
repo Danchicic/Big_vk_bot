@@ -2,7 +2,6 @@ import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 import json
 
-
 from config import TOKEN
 
 from Users import User
@@ -89,7 +88,6 @@ try:
                               keyboard=create_reader_kb)
                 user_state['data']['reader'] = True
 
-
                 # 1) Re:pass
             elif txt == 're:pass':
                 user.send_msg(vk_session=vk_session, user_id=event.user_id, text='Re:pass',
@@ -158,7 +156,7 @@ try:
 
             elif txt == 'хочу предложить фичу':
                 i += 1
-                user.send_msg(vk_session, event.user_id, text='Опишите фичу',
+                user.send_msg(vk_session=vk_session, user_id=event.user_id, text='Опишите фичу',
                               keyboard=pass_kb)
                 user_state['data']['click_up'] = True
                 if ['Выберите из предложеннго списка', read_event_dif] not in user_state['data']['stack']:

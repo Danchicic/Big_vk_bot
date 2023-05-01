@@ -1,2 +1,8 @@
-.gitignore
 venv/
+.idea/
+__pycache__/
+author/__pycache__/
+database.db
+reader/__pycache__/
+req.txt
+translator/__pycache__/

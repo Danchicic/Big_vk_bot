@@ -85,48 +85,36 @@
     "func": "back"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "не пришли деньги/тикеты",
+    "func": "no_money_or_tickets"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "не пришли деньги",
+    "func": "no_money"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "не пришли тикеты",
+    "func": "link_to_re"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "привязан к re?",
+    "func": "link_to_re"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "да",
+    "func": "if_block"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "нет",
+    "func": "if_block"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "прошло 24 часа?",
+    "func": "hours_24"
   },
   {
-    "text": "",
-    "func": ""
-  },
-  {
-    "text": "",
-    "func": ""
-  },
-  {
-    "text": "",
-    "func": ""
-  },
-  {
-    "text": "",
-    "func": ""
+    "text": "привязал?",
+    "func": "want_to_linked"
   },
   {
     "text": "",
