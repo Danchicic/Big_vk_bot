@@ -139,7 +139,11 @@ class Bot:
             self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
                                 ('Читатель',))
             self.conn.commit()
-        """Еще одно условие """
+        elif self.TRANS:
+            self.user.send_msg(self.vk_session, text='Перевожу вас на общение с модератором', keyboard=pass_kb)
+            self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                                ('переводчик',))
+            self.conn.commit()
 
     def want_to_idea(self):
         self.user.send_msg(self.vk_session, text='Опишите фичу', keyboard=pass_kb)
@@ -219,6 +223,109 @@ class Bot:
             ('не пришли деньги/тикеты', True, True, False))
         self.conn.commit()
 
+    def link_to_re(self):
+        if self.tickets and self.msg == 'назад':
+            self.user.send_msg(self.vk_session, text='Вы привязаны к re?', keyboard=if_kb_reader_re)
+            self.cursor.execute(
+                f"UPDATE user_state SET last_answer=?, link_re=?, tickets=?, money=? WHERE id={self.user_id}",
+                ('не пришли деньги/тикеты', True, True, False))
+            self.conn.commit()
+            return None
+
+        else:
+            self.cursor.execute(f"UPDATE user_state SET last_answer=?, money=?, link_re=? WHERE id={self.user_id}",
+                                ('не пришли деньги', False, True))
+
+        self.user.send_msg(self.vk_session, text='Привязан к re?', keyboard=if_kb_reader_re)
+        self.conn.commit()
+
+    def want_to_linked(self):
+        self.user.send_msg(self.vk_session, text='Привязать к re?', keyboard=if_kb_reader_re)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=?, linked=?, link_re=? WHERE id={self.user_id}",
+                            ('привязан к re?', True, False))
+        self.conn.commit()
+
+    def author(self):
+        self.user.send_msg(self.vk_session, text='Вы выбрали автора', keyboard=author_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('начать',))
+        self.conn.commit()
+
+    def how_to_post_my_work(self):
+        self.user.send_msg(self.vk_session, text=answers['author']['howto']['how_to_my_work'], keyboard=pass_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('автор',))
+        self.conn.commit()
+
+    def how_to_chapters(self):
+        self.user.send_msg(self.vk_session, text=answers['author']['howto']['how_to_chapters'], keyboard=pass_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('автор',))
+        self.conn.commit()
+
+    def translator(self):
+        self.user.send_msg(self.vk_session, text='Вы выбрали переводчика', keyboard=trans_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=?, trans=? WHERE id={self.user_id}",
+                            ('начать', True,))
+        self.conn.commit()
+
+    def monetization(self):
+        self.user.send_msg(self.vk_session, text='Выберите из предложенного списка', keyboard=translator_money_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('переводчик',))
+        self.conn.commit()
+
+    def how_to_link(self):
+        self.user.send_msg(self.vk_session, text='Есть верификация?', keyboard=if_kb_translator)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=?, how_link=? WHERE id={self.user_id}",
+                            ('монетизация', True))
+        self.conn.commit()
+
+    def contract_questions(self):
+        self.user.send_msg(self.vk_session, text='Вопросы по договорам', keyboard=translator_question)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('монетизация',))
+        self.conn.commit()
+
+    def transfer_to_another(self):
+        self.user.send_msg(self.vk_session, text=answers['translator']['monetization_questions']['transfer'],
+                           keyboard=pass_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('вопросы по договорам',))
+        self.conn.commit()
+
+    def question_sign(self):
+        self.user.send_msg(self.vk_session, text=answers['translator']['monetization_questions']['sign_question'],
+                           keyboard=pass_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('вопросы по договорам',))
+        self.conn.commit()
+
+    def site_work(self):
+        self.user.send_msg(self.vk_session, text='Глава не заливается', keyboard=work_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('переводчик',))
+        self.conn.commit()
+
+    def main(self):
+        self.user.send_msg(self.vk_session, text=answers['site_issues']['main'], keyboard=pass_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('работа сайта',))
+        self.conn.commit()
+
+    def mirror(self):
+        self.user.send_msg(self.vk_session, text=answers['site_issues']['remanga'], keyboard=pass_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}",
+                            ('работа сайта',))
+        self.conn.commit()
+
+    def title_transfer(self):
+        print('start func')
+        self.user.send_msg(self.vk_session, text='Перевожу вас на общение с модератором', keyboard=pass_kb)
+        self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}", ('переводчик',))
+        """посмотреть что с модератором"""
+        self.conn.commit()
+
     def if_block(self):
         print('зашел в  if ')
         if self.msg == 'да':
@@ -234,6 +341,10 @@ class Bot:
                 self.user.send_msg(self.vk_session, text='Идет пересчет баланса...', keyboard=pass_kb)
                 self.cursor.execute(f"UPDATE user_state SET last_answer=?, linked=? WHERE id={self.user_id}",
                                     ('привязал?', False))
+            elif self.how_link:
+                self.user.send_msg(self.vk_session, text=answers['translator']['howto']['put_hand'], keyboard=pass_kb)
+                self.cursor.execute(f"UPDATE user_state SET last_answer=?, how_link=? WHERE id={self.user_id}",
+                                    ('есть верификация?', False))
 
         elif self.msg == 'нет':
             if self.money:
@@ -249,31 +360,12 @@ class Bot:
                 self.cursor.execute(f"UPDATE user_state SET last_answer=?,linked=? WHERE id={self.user_id}",
                                     ('привязал?', False))
                 """чекнуть модератора"""
+            elif self.how_link:
+                self.user.send_msg(self.vk_session, text=answers['translator']['howto']['need_to_sign'],
+                                   keyboard=pass_kb)
+                self.cursor.execute(f"UPDATE user_state SET last_answer=?, how_link=? WHERE id={self.user_id}",
+                                    ('есть верификация?', False))
 
-        self.conn.commit()
-
-    def link_to_re(self):
-        if self.msg == 'не пришли тикеты':
-            print('работает')
-            self.cursor.execute(f"UPDATE user_state SET tickets=? WHERE id={self.user_id}",
-                                (True,))
-            self.tickets = 1
-
-        if self.tickets:
-            self.cursor.execute(f"UPDATE user_state SET last_answer=?, link_re=? WHERE id={self.user_id}",
-                                ('не пришли тикеты', True))
-        else:
-            self.cursor.execute(f"UPDATE user_state SET last_answer=?, money=?, link_re=? WHERE id={self.user_id}",
-                                ('не пришли деньги', False, True))
-
-        self.user.send_msg(self.vk_session, text='Привязан к re?', keyboard=if_kb_reader_re)
-
-        self.conn.commit()
-
-    def want_to_linked(self):
-        self.user.send_msg(self.vk_session, text='Привязать к re?', keyboard=if_kb_reader_re)
-        self.cursor.execute(f"UPDATE user_state SET last_answer=?, linked=?, link_re=? WHERE id={self.user_id}",
-                            ('привязан к re?', True, False))
         self.conn.commit()
 
     def back(self):
@@ -297,7 +389,7 @@ class Bot:
 
                 elif row['text'] == 'есть верификация?':
                     self.cursor.execute(f"UPDATE user_state SET how_link=? WHERE id={self.user_id}",
-                                        (False, True,))
+                                        (True,))
 
                 self.conn.commit()
                 print(f'вызываю функцию:{row["func"]}')
@@ -309,6 +401,7 @@ class Bot:
         self.user.send_msg(self.vk_session, text='Выберите категорию', keyboard=start_kb)
 
         self.cursor.execute(
-            f"UPDATE user_state SET trans=?,reader=?, money=?, link_re=?, linked=?, click_up=?, how_link=?, moder=?,tickets=?, last_answer=?  WHERE id={self.user_id}",
+            f"UPDATE user_state SET trans=?,reader=?, money=?, link_re=?, linked=?, click_up=?, how_link=?, moder=?,\
+            tickets=?, last_answer=?  WHERE id={self.user_id}",
             (False, False, False, False, False, False, False, False, False, ''))
         self.conn.commit()

@@ -94,7 +94,7 @@
   },
   {
     "text": "не пришли тикеты",
-    "func": "link_to_re"
+    "func": "no_tickets"
   },
   {
     "text": "привязан к re?",
@@ -117,60 +117,60 @@
     "func": "want_to_linked"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "как выкладывать свою работу?",
+    "func": "how_to_post_my_work"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "автор",
+    "func": "author"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "как заливать главы?",
+    "func": "how_to_chapters"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "переводчик",
+    "func": "translator"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "монетизация",
+    "func": "monetization"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "работа сайта",
+    "func": "site_work"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "перехват/альта/передача тайтла",
+    "func": "title_transfer"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "зеркало. пояснить про реманга.орг",
+    "func": "mirror"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "основа",
+    "func": "main"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "как подключить",
+    "func": "how_to_link"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "вопросы по подписанию",
+    "func": "question_sign"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "вопросы по договорам",
+    "func": "contract_questions"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "перенос на другое лицо/расторжение",
+    "func": "transfer_to_another"
   },
   {
-    "text": "",
-    "func": ""
+    "text": "есть верификация?",
+    "func": "how_to_link"
   },
   {
     "text": "",
