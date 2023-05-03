@@ -4,7 +4,7 @@ conn = sqlite3.connect('database.db')
 cursor = conn.cursor()
 
 # Создание таблички
-cursor.execute('''CREATE TABLE user_state
+cursor.execute('''CREATE TABLE IF NOT EXISTS user_state
                   (id integer, 
                   trans boolean,
                    reader boolean,

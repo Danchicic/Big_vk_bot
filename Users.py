@@ -14,9 +14,6 @@ with open('actions.json', 'r', encoding='utf-8') as f:
 with open('ans.json', 'r', encoding='utf-8') as f:
     answers = json.load(f)
 
-print(actions)
-print(answers)
-
 create_reader_kb = create_reader_kb()
 read_event_dif = read_event_dif()
 re_pass_kb = re_pass_kb()
@@ -61,11 +58,10 @@ class Bot:
         self.user = User(self.user_id)
         self.cursor = conn.cursor()
         self.conn = conn
-        users = self.cursor.execute('SELECT id FROM user_state').fetchall()
 
-        if self.user_id not in [r[0] for r in users]:
-            self.cursor.execute(f"INSERT INTO user_state (id) VALUES ({self.user_id})")
-            self.conn.commit()
+        if not self.cursor.execute(f'SELECT id FROM user_state WHERE id = ?', (self.user_id,)).fetchall():
+            self.cursor.execute("INSERT INTO user_state (id) VALUES (?)", (self.user_id,))
+            conn.commit()
         data = self.cursor.execute(
             f"SELECT * FROM user_state WHERE id={self.user_id}"
         ).fetchone()
@@ -320,14 +316,12 @@ class Bot:
         self.conn.commit()
 
     def title_transfer(self):
-        print('start func')
         self.user.send_msg(self.vk_session, text='Перевожу вас на общение с модератором', keyboard=pass_kb)
         self.cursor.execute(f"UPDATE user_state SET last_answer=? WHERE id={self.user_id}", ('переводчик',))
         """посмотреть что с модератором"""
         self.conn.commit()
 
     def if_block(self):
-        print('зашел в  if ')
         if self.msg == 'да':
             if self.money:
                 self.user.send_msg(self.vk_session, text='Привязан к re?', keyboard=if_kb_reader_re)
@@ -370,15 +364,13 @@ class Bot:
 
     def back(self):
         for row in actions:
-            if self.last_answer.lower() == row['text']:
-                print(self.last_answer)
+            if self.last_answer is not None and self.last_answer.lower() == row['text']:
                 if row['text'] == 'прошло 24 часа?':
                     self.cursor.execute(f"UPDATE user_state SET money=? WHERE id={self.user_id}",
                                         (True,))
                 elif row['text'] == 'привязан к re?' and self.tickets:
                     self.cursor.execute(f"UPDATE user_state SET money=?, link_re=? WHERE id={self.user_id}",
                                         (False, True,))
-                    print('должен выйти', 'func=', row['func'])
                 elif row['text'] == 'привязан к re?':
                     self.cursor.execute(f"UPDATE user_state SET money=?, link_re=? WHERE id={self.user_id}",
                                         (False, True,))
@@ -392,7 +384,6 @@ class Bot:
                                         (True,))
 
                 self.conn.commit()
-                print(f'вызываю функцию:{row["func"]}')
 
                 x = getattr(self, row['func'])
                 return x()

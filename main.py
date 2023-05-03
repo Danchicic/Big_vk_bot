@@ -15,6 +15,7 @@ try:
     for event in longpolling.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             msg = event.text.lower()
+
             bot = Bot(msg, event.user_id, vk_session)
             bot.hand_message()
 
